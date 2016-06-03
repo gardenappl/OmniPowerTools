@@ -1,0 +1,16 @@
+[
+{
+  "modid": "power_multitools",
+  "name": "Power Multitools",
+  "description": "A mod that adds IC2-style powered drills and chainsaws for various mods, such as EnderIO. Formerly known as RFDrills.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["goldenapple"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
