@@ -4,6 +4,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 
 public class ToolProperties {
+
+    public static ToolProperties DARK_CHAINSAW_1;
+
     public Item.ToolMaterial material;
     public boolean canBreak;
     public MiningMode[] modes;

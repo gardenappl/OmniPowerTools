@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerRenderHandler {
 
+    //Note: I can't use RenderPlayerEvent because the arm poses are calculated AFTER that event is fired.
+    //So instead I use RenderLivingEvent
     @SubscribeEvent
     public void onLivingRender(RenderLivingEvent.Pre event){
         if (event.getEntity() == null || !(event.getEntity() instanceof EntityPlayer) || !(event.getRenderer() instanceof RenderPlayer))

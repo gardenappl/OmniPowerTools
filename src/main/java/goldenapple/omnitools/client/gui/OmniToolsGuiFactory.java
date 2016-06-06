@@ -8,14 +8,11 @@ import java.util.Set;
 
 public class OmniToolsGuiFactory implements IModGuiFactory {
     @Override
-    public void initialize(Minecraft minecraftInstance) {
-
-    }
+    public void initialize(Minecraft minecraftInstance) {}
 
     @Override
     public Class<? extends GuiScreen> mainConfigGuiClass() {
-        //return GuiOmniToolsConfig.class;
-        return null;
+        return GuiOmniToolsConfig.class;
     }
 
     @Override
@@ -27,10 +24,4 @@ public class OmniToolsGuiFactory implements IModGuiFactory {
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
     }
-
-//    public static class GuiOmniToolsConfig extends GuiConfig {
-//        public GuiOmniToolsConfig(GuiScreen parentScreen) {
-//            super(parentScreen, configElements, modID, allRequireWorldRestart, allRequireMcRestart, title);
-//        }
-//    }
 }
