@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ItemChainsaw extends ItemAxe implements ITool{
-    private ToolProperties properties;
+    protected ToolProperties properties;
 
     public ItemChainsaw(ToolProperties properties, float speed) {
         super(properties.material, properties.material.getDamageVsEntity(), speed);

@@ -22,7 +22,7 @@ public class Config {
     public static boolean integrateEIO;
     public static boolean miningAnimation;
 
-    public static float darkChainsawSpeed1 = -3.3F;
+    public static float darkChainsawSpeed1 = -3F;
 
     public Config(File file){
         if(config == null)

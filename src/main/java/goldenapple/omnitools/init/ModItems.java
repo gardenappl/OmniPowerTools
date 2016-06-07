@@ -5,16 +5,20 @@ import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.config.RFToolProperties;
 import goldenapple.omnitools.config.ToolProperties;
 import goldenapple.omnitools.item.ItemChainsaw;
+import goldenapple.omnitools.item.ItemDrill;
 import goldenapple.omnitools.item.ItemRFChainsaw;
 import goldenapple.omnitools.reference.Names;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModItems {
     public static ItemChainsaw darkSteelChainsaw;
+    public static ItemDrill darkSteelDrill;
 
     public static void register(){
         darkSteelChainsaw = register(new ItemRFChainsaw(ToolProperties.DARK_CHAINSAW_1, RFToolProperties.DARK_CHAINSAW_1, Config.darkChainsawSpeed1), Names.DARK_STEEL_CHAINSAW);
+        darkSteelDrill = register(new ItemDrill(new ToolProperties(Item.ToolMaterial.WOOD, true, EnumRarity.COMMON)), Names.DARK_STEEL_DRILL);
     }
 
     public static <T extends Item> T register(T item, String name){

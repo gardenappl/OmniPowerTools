@@ -17,6 +17,7 @@ public class ClientProxy extends Proxy {
     @Override
     public void registerRenders(){
         registerRender(ModItems.darkSteelChainsaw);
+        registerRender(ModItems.darkSteelDrill);
     }
 
     private static void registerRender(Item item) {
