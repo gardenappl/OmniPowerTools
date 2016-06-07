@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 import java.util.List;
@@ -58,14 +59,23 @@ public class ItemChainsaw extends ItemAxe implements ITool{
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-        if(!getProperties(stack).canBreak && damage >= getMaxDamage(stack) - getDamage(stack))
+        if(!properties.canBreak && damage >= getMaxDamage(stack) - getDamage(stack))
             return;
         super.setDamage(stack, damage);
     }
 
     @Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
+        if(state.getBlock() instanceof IShearable)
+            stack.damageItem(1, entity);
+        else
+            super.onBlockDestroyed(stack, world, state, pos, entity);
+        return true;
+    }
+
+    @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-        if(shearEntity(stack, player, entity)){
+        if(canShear(stack) && shearEntity(stack, player, entity)){
             player.swingArm(hand);
             stack.damageItem(1, player);
             return true;
@@ -73,8 +83,14 @@ public class ItemChainsaw extends ItemAxe implements ITool{
         return false;
     }
 
-    protected boolean shearEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity){
-        if (entity.worldObj.isRemote || !canShear(stack))
+//    @Override
+//    public boolean canHarvestBlock(IBlockState state){ //stolen from ItemShears
+//        Block block = state.getBlock();
+//        return block == Blocks.WEB || block == Blocks.REDSTONE_WIRE || block == Blocks.TRIPWIRE;
+//    }
+
+    public boolean shearEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity){ //stolen from ItemShears
+        if (entity.worldObj.isRemote)
             return false;
 
         if (entity instanceof IShearable) {
@@ -98,13 +114,13 @@ public class ItemChainsaw extends ItemAxe implements ITool{
 
     @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player) {
-        if(harvestShearableBlock(stack, pos, player))
-            stack.damageItem(1, player);
+        if(canShear(stack))
+            harvestShearableBlock(stack, pos, player);
         return false;
     }
 
-    protected boolean harvestShearableBlock(ItemStack stack, BlockPos pos, EntityPlayer player){
-        if (player.worldObj.isRemote || player.capabilities.isCreativeMode || !canShear(stack))
+    public boolean harvestShearableBlock(ItemStack stack, BlockPos pos, EntityPlayer player){ //stolen from ItemShears
+        if (player.worldObj.isRemote || player.capabilities.isCreativeMode)
             return false;
 
         Block block = player.worldObj.getBlockState(pos).getBlock();
@@ -130,24 +146,19 @@ public class ItemChainsaw extends ItemAxe implements ITool{
         return false;
     }
 
-    private boolean canMine(ItemStack stack){
-        return !(!getProperties(stack).canBreak && stack.getItemDamage() == stack.getMaxDamage());
+    public boolean canMine(ItemStack stack){
+        return !(!properties.canBreak && stack.getItemDamage() == stack.getMaxDamage());
     }
 
-    private boolean canShear(ItemStack stack){
+    public boolean canShear(ItemStack stack){
         return canMine(stack);
     }
 
     /** ITool **/
 
     @Override
-    public ToolProperties getProperties(ItemStack stack) {
-        return properties;
-    }
-
-    @Override
     public boolean hasDrillingAnimation(ItemStack stack) {
-        return true;
+        return canMine(stack);
     }
 
 }

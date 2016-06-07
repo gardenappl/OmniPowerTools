@@ -1,11 +1,11 @@
 package goldenapple.omnitools.item;
 
-import goldenapple.omnitools.config.RFToolProperties;
+import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.item.ItemStack;
 
-public interface IRFTool extends ITool {
-    public RFToolProperties getPropertiesRF(ItemStack stack);
+/** Just IEnergyContainerItem with some methods for convenience */
 
+public interface IRFContainerItem extends IEnergyContainerItem {
     public ItemStack setEnergy(ItemStack stack, int energy);
 
     public ItemStack drainEnergy(ItemStack stack, int energy);

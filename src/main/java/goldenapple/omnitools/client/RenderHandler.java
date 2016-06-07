@@ -1,5 +1,6 @@
 package goldenapple.omnitools.client;
 
+import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.item.ITool;
 import goldenapple.omnitools.util.PlayerUtil;
 import net.minecraft.client.model.ModelBiped;
@@ -10,13 +11,13 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class PlayerRenderHandler {
+public class RenderHandler {
 
     //Note: I can't use RenderPlayerEvent because the arm poses are calculated AFTER that event is fired.
     //So instead I use RenderLivingEvent
     @SubscribeEvent
     public void onLivingRender(RenderLivingEvent.Pre event){
-        if (event.getEntity() == null || !(event.getEntity() instanceof EntityPlayer) || !(event.getRenderer() instanceof RenderPlayer))
+        if (!Config.miningAnimation || event.getEntity() == null || !(event.getEntity() instanceof EntityPlayer) || !(event.getRenderer() instanceof RenderPlayer))
             return;
         EntityPlayer player = (EntityPlayer)event.getEntity();
         ItemStack stack = player.getHeldItemMainhand();

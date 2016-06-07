@@ -1,0 +1,35 @@
+item.omnitools:dark_steel_drill.name=Dark Drill
+item.omnitools:dark_steel_chainsaw.name=Dark Chainsaw
+item.omnitools:dark_soul_crusher.name=Dark Soul Crusher
+
+item.omnitools:resonating_crystal.name=Resonating Crystal
+item.omnitools:destructive_crystal.name=Destructive Crystal
+item.omnitools:earthshaking_crystal.name=Earthshaking Crystal
+item.omnitools:soularium_nugget.name=Soularium Nugget
+item.omnitools:dark_soularium.name=Dark Soularium
+item.omnitools:dark_soularium_nugget.name=Dark Soularium Nugget
+
+config.maxEnergy=Maximum Energy
+config.maxEnergy.tooltip=The maximum amount of RF that the tool can hold
+config.energyPerBlock=Energy Per Block
+config.energyPerBlock.tooltip=The amount of RF that the tool uses to mine 1 block (uses twice as much energy for attacking)
+config.rechargeRate=Recharge Rate
+config.rechargeRate.tooltip=The recharge rate of the tool in RF/t
+config.canBreak=Can Break
+config.canBreak.tooltip=Will the tool break when it runs out of energy/durability
+config.miningLevel=Mining Level
+config.miningLevel.tooltip=Mining level of the tool
+config.efficiency=Efficiency
+config.efficiency.tooltip=Mining speed of the tool
+config.damage=Attack Damage
+config.damage.tooltip=Damage that the tool does when attacking enemies
+config.attackSpeed=Attack Speed
+config.attackSpeed.tooltip=The attack speed of the tool (attacks per second)
+config.enchant=Enchantability
+config.enchant.tooltip=Enchantability of the tool (0 = not enchantable)
+
+config.category.eio=EnderIO Integration
+config.integrateEIO=Enable EIO integration
+config.integrateEIO.tooltip=Set this to "false" to disable EnderIO integration
+config.animation=Mining Animation
+config.animation.tooltip=Enable custom Drill/Chainsaw mining animation (note: only works in 3rd person mode)
