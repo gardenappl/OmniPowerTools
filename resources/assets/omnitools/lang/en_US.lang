@@ -32,4 +32,4 @@ config.category.eio=EnderIO Integration
 config.integrateEIO=Enable EIO integration
 config.integrateEIO.tooltip=Set this to "false" to disable EnderIO integration
 config.animation=Mining Animation
-config.animation.tooltip=Enable custom Drill/Chainsaw mining animation (note: only works in 3rd person mode)
+config.animation.tooltip=Enable custom Drill/Chainsaw mining animation

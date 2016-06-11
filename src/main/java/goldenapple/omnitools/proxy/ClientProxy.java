@@ -1,8 +1,11 @@
 package goldenapple.omnitools.proxy;
 
-import goldenapple.omnitools.client.RenderHandler;
+import goldenapple.omnitools.client.BlockRenderHandler;
+import goldenapple.omnitools.client.PlayerRenderHandler;
 import goldenapple.omnitools.init.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
@@ -11,7 +14,11 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientProxy extends Proxy {
     @Override
     public void init() {
-        MinecraftForge.EVENT_BUS.register(new RenderHandler());
+        MinecraftForge.EVENT_BUS.register(new PlayerRenderHandler());
+
+        BlockRenderHandler blockRenderHandler = new BlockRenderHandler();
+        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(blockRenderHandler);
+        MinecraftForge.EVENT_BUS.register(blockRenderHandler);
     }
 
     @Override

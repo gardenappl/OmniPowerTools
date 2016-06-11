@@ -1,29 +1,26 @@
 package goldenapple.omnitools.item;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.config.ToolProperties;
+import goldenapple.omnitools.util.ToolHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-
-import java.util.List;
-import java.util.Random;
 
 public class ItemChainsaw extends ItemAxe implements ITool{
     protected ToolProperties properties;
@@ -75,8 +72,7 @@ public class ItemChainsaw extends ItemAxe implements ITool{
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-        if(canShear(stack) && shearEntity(stack, player, entity)){
-            player.swingArm(hand);
+        if(canShear(stack) && ToolHelper.shearEntity(stack, player, entity)){
             stack.damageItem(1, player);
             return true;
         }
@@ -89,60 +85,10 @@ public class ItemChainsaw extends ItemAxe implements ITool{
 //        return block == Blocks.WEB || block == Blocks.REDSTONE_WIRE || block == Blocks.TRIPWIRE;
 //    }
 
-    public boolean shearEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity){ //stolen from ItemShears
-        if (entity.worldObj.isRemote)
-            return false;
-
-        if (entity instanceof IShearable) {
-            IShearable target = (IShearable)entity;
-            BlockPos pos = new BlockPos(entity.posX, entity.posY, entity.posZ);
-            if (target.isShearable(stack, entity.worldObj, pos)) {
-                List<ItemStack> drops = target.onSheared(stack, entity.worldObj, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
-
-                Random rand = new Random();
-                for(ItemStack drop : drops) {
-                    EntityItem entityItem = entity.entityDropItem(drop, 1.0F);
-                    entityItem.motionY += rand.nextFloat() * 0.05F;
-                    entityItem.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    entityItem.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player) {
         if(canShear(stack))
-            harvestShearableBlock(stack, pos, player);
-        return false;
-    }
-
-    public boolean harvestShearableBlock(ItemStack stack, BlockPos pos, EntityPlayer player){ //stolen from ItemShears
-        if (player.worldObj.isRemote || player.capabilities.isCreativeMode)
-            return false;
-
-        Block block = player.worldObj.getBlockState(pos).getBlock();
-        if (block instanceof IShearable) {
-            IShearable target = (IShearable)block;
-            if (target.isShearable(stack, player.worldObj, pos)) {
-                List<ItemStack> drops = target.onSheared(stack, player.worldObj, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
-                Random rand = new Random();
-
-                for(ItemStack drop : drops) {
-                    float f = 0.7F;
-                    double d  = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-                    double d1 = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-                    double d2 = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-                    EntityItem entityItem = new EntityItem(player.worldObj, (double)pos.getX() + d, (double)pos.getY() + d1, (double)pos.getZ() + d2, drop);
-                    entityItem.setDefaultPickupDelay();
-                    player.worldObj.spawnEntityInWorld(entityItem);
-                }
-                player.addStat(StatList.getBlockStats(block));
-                return true;
-            }
-        }
+            ToolHelper.shearBlock(stack, pos, player);
         return false;
     }
 
@@ -154,11 +100,27 @@ public class ItemChainsaw extends ItemAxe implements ITool{
         return canMine(stack);
     }
 
-    /** ITool **/
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        if(hasDrillingAnimation(stack) && Config.miningAnimation == 2)
+            return EnumAction.BOW;
+        return EnumAction.NONE;
+    }
+
+    /** ITool */
 
     @Override
     public boolean hasDrillingAnimation(ItemStack stack) {
         return canMine(stack);
     }
 
+    @Override
+    public boolean hasAoE(ItemStack stack, EntityPlayer player) {
+        return false;
+    }
+
+    @Override
+    public ImmutableList<BlockPos> getAoEBlocks(ItemStack stack, World world, EntityPlayer player, BlockPos origin, boolean harvest) {
+        return ImmutableList.of();
+    }
 }

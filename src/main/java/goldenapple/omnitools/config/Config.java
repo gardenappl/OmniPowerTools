@@ -20,7 +20,8 @@ public class Config {
     public static final String CATEGORY_ENDERIO = "enderio";
 
     public static boolean integrateEIO;
-    public static boolean miningAnimation;
+    public static int miningAnimation;
+    private static final String[] MINING_ANIMATIONS = new String[]{"false", "third-person-only", "true"};
 
     public static float darkChainsawSpeed1 = -3F;
 
@@ -34,7 +35,10 @@ public class Config {
         config.getCategory(CATEGORY_ENDERIO).setLanguageKey("config.category.eio");
 
         integrateEIO = config.get(CATEGORY_ENDERIO, "Enable EIO Integration", true).setLanguageKey("config.integrateEIO").setRequiresMcRestart(true).getBoolean();
-        miningAnimation = config.get(CATEGORY_GENERAL, "Mining Animation", true).setLanguageKey("config.animation").setRequiresWorldRestart(false).getBoolean();
+        String anim = config.get(CATEGORY_GENERAL, "Mining Animation", MINING_ANIMATIONS[2]).setLanguageKey("config.animation").setValidValues(MINING_ANIMATIONS).setRequiresWorldRestart(false).getString();
+        for(int i = 0; i < MINING_ANIMATIONS.length; i++)
+            if(MINING_ANIMATIONS[i].equals(anim))
+                miningAnimation = i;
 
         ToolProperties.DARK_CHAINSAW_1 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw1", 5, 8, 9, 25, false, EnumRarity.UNCOMMON);
         RFToolProperties.DARK_CHAINSAW_1 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw1", 200000, 500, 400);

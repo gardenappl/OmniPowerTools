@@ -2,36 +2,38 @@ package goldenapple.omnitools.item;
 
 import goldenapple.omnitools.config.RFToolProperties;
 import goldenapple.omnitools.config.ToolProperties;
+import goldenapple.omnitools.reference.NBTTypes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.event.ForgeEventFactory;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
-public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
-    private RFToolProperties propertiesRF;
+public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
+    protected RFToolProperties propertiesRF;
 
-    public ItemRFChainsaw(ToolProperties properties, RFToolProperties propertiesRF, float speed) {
-        super(properties, speed);
+    public ItemDrillRF(ToolProperties properties, RFToolProperties propertiesRF) {
+        super(properties);
         this.propertiesRF = propertiesRF;
         this.setHasSubtypes(true);
     }
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
-        if(state.getBlockHardness(world, pos) != 0 || (canShear(stack) && state.getBlock() instanceof IShearable))
+        if(state.getBlockHardness(world, pos) != 0)
             drainEnergy(stack, getEnergyUsage(stack, state), entity);
         return true;
     }
@@ -43,16 +45,6 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-        if(shearEntity(stack, player, entity)){
-            player.swingArm(hand);
-            drainEnergy(stack, getEnergyUsage(stack), entity);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         list.add(new ItemStack(item));
         list.add(setEnergy(new ItemStack(item), propertiesRF.maxEnergy));
@@ -60,7 +52,9 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true;
+        if (!stack.hasTagCompound())
+            return true;
+        return !stack.getTagCompound().getBoolean("CreativeTabIcon");
     }
 
     @Override
@@ -89,10 +83,7 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
     }
 
     public int getEnergyUsage(ItemStack stack, IBlockState state){
-        if(canShear(stack) && state.getBlock() instanceof IShearable)
-            return getEnergyUsage(stack) / 5;
-        else
-            return getEnergyUsage(stack);
+        return getEnergyUsage(stack);
     }
 
     @Override
@@ -100,7 +91,12 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
         return getEnergyStored(stack) > 0;
     }
 
-    /** IRFTool **/
+    @Override
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
+        return super.getItemUseAction(stack);
+    }
+
+    /** IRFTool */
 
     @Override
     public ItemStack setEnergy(ItemStack stack, int energy){
@@ -113,11 +109,14 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
 
     @Override
     public ItemStack drainEnergy(ItemStack stack, int energy, EntityLivingBase entity){
+        if(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)
+            return stack;
         setEnergy(stack, Math.max(getEnergyStored(stack) - energy, 0));
         if(getEnergyStored(stack) == 0 && properties.canBreak) {
             if (entity instanceof EntityPlayer) {
-                EntityPlayer entityplayer = (EntityPlayer) entity;
-                entityplayer.addStat(StatList.getObjectBreakStats(this));
+                EntityPlayer player = (EntityPlayer) entity;
+                ForgeEventFactory.onPlayerDestroyItem(player, stack, entity.getActiveHand());
+                player.addStat(StatList.getObjectBreakStats(this));
             }
             entity.renderBrokenItemStack(stack);
             --stack.stackSize;
@@ -126,7 +125,7 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
         return stack;
     }
 
-    /** IEnergyContainerItem **/
+    /** IEnergyContainerItem */
 
     @Override
     public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
@@ -148,7 +147,7 @@ public class ItemRFChainsaw extends ItemChainsaw implements IRFContainerItem {
         if(!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
 
-        if(stack.getTagCompound().hasKey("Energy"))
+        if(stack.getTagCompound().hasKey("Energy", NBTTypes.ANY_NUMBER))
             return stack.getTagCompound().getInteger("Energy");
         else
             return 0;

@@ -1,11 +1,11 @@
 package goldenapple.omnitools.util;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 
-public class PlayerUtil {
-    public static EnumHandSide getHandSide(EntityPlayer player, EnumHand hand){
+public class MiscUtil {
+    public static EnumHandSide getHandSide(EntityLivingBase player, EnumHand hand){
         if(hand == EnumHand.MAIN_HAND)
             return player.getPrimaryHand();
         else
