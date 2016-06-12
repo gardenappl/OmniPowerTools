@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -22,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
+@SuppressWarnings("NullableProblems")
 public class ItemChainsaw extends ItemAxe implements ITool{
     protected ToolProperties properties;
 
@@ -52,6 +54,11 @@ public class ItemChainsaw extends ItemAxe implements ITool{
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         return canMine(stack) ? super.getAttributeModifiers(slot, stack) : HashMultimap.<String, AttributeModifier>create();
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        return properties.rarity;
     }
 
     @Override
@@ -92,19 +99,19 @@ public class ItemChainsaw extends ItemAxe implements ITool{
         return false;
     }
 
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        if(hasDrillingAnimation(stack) && Config.miningAnimation == 2)
+            return EnumAction.BOW;
+        return EnumAction.NONE;
+    }
+
     public boolean canMine(ItemStack stack){
         return !(!properties.canBreak && stack.getItemDamage() == stack.getMaxDamage());
     }
 
     public boolean canShear(ItemStack stack){
         return canMine(stack);
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
-        if(hasDrillingAnimation(stack) && Config.miningAnimation == 2)
-            return EnumAction.BOW;
-        return EnumAction.NONE;
     }
 
     /** ITool */

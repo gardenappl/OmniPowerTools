@@ -33,3 +33,5 @@ config.integrateEIO=Enable EIO integration
 config.integrateEIO.tooltip=Set this to "false" to disable EnderIO integration
 config.animation=Mining Animation
 config.animation.tooltip=Enable custom Drill/Chainsaw mining animation
+config.attackSpeedDrills=Drill Attack Speed
+config.attackSpeedDrills.tooltip=The attack speed of all drills (attacks per second)

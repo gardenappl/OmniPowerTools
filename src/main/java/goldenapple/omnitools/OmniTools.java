@@ -2,6 +2,7 @@ package goldenapple.omnitools;
 
 import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.init.ModItems;
+import goldenapple.omnitools.item.upgrade.AnvilUpgradeHandler;
 import goldenapple.omnitools.proxy.Proxy;
 import goldenapple.omnitools.reference.Classes;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,6 +37,8 @@ public class OmniTools {
     @EventHandler
     public void init(FMLInitializationEvent event){
         proxy.init();
+        if(Config.integrateEIO)
+            MinecraftForge.EVENT_BUS.register(new AnvilUpgradeHandler());
     }
 
     @EventHandler

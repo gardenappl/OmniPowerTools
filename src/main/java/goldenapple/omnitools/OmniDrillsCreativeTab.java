@@ -15,7 +15,7 @@ public class OmniDrillsCreativeTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return ModItems.darkSteelDrill;
+        return ModItems.darkSteelDrill1;
     }
 
     @Override

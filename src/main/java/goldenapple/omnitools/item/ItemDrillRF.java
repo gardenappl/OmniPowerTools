@@ -2,7 +2,6 @@ package goldenapple.omnitools.item;
 
 import goldenapple.omnitools.config.RFToolProperties;
 import goldenapple.omnitools.config.ToolProperties;
-import goldenapple.omnitools.reference.NBTTypes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -12,7 +11,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -100,10 +99,7 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
 
     @Override
     public ItemStack setEnergy(ItemStack stack, int energy){
-        if(!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
-
-        stack.getTagCompound().setInteger("Energy", Math.min(energy, getMaxEnergyStored(stack)));
+        stack.setTagInfo("Energy", new NBTTagInt(Math.min(energy, getMaxEnergyStored(stack))));
         return stack;
     }
 
@@ -145,12 +141,8 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
     @Override
     public int getEnergyStored(ItemStack stack) {
         if(!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
-
-        if(stack.getTagCompound().hasKey("Energy", NBTTypes.ANY_NUMBER))
-            return stack.getTagCompound().getInteger("Energy");
-        else
             return 0;
+        return stack.getTagCompound().getInteger("Energy");
     }
 
     @Override

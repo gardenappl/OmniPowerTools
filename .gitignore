@@ -5,3 +5,5 @@ libs
 run
 out
 *.iml
+*.ipr
+*.iws
