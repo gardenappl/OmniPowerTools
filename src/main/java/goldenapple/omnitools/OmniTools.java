@@ -4,6 +4,7 @@ import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.init.ModItems;
 import goldenapple.omnitools.proxy.Proxy;
 import goldenapple.omnitools.reference.Classes;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -21,9 +22,11 @@ public class OmniTools {
 
     @SidedProxy(clientSide = Classes.CLIENT_PROXY, serverSide = Classes.SERVER_PROXY)
     public static Proxy proxy;
+    public static CreativeTabs creativeTab = new OmniDrillsCreativeTab();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
+
         MinecraftForge.EVENT_BUS.register(new Config(event.getSuggestedConfigurationFile()));
         proxy.preInit();
         ModItems.register();
