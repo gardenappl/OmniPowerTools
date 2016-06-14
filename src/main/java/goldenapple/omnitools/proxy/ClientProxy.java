@@ -26,10 +26,14 @@ public class ClientProxy extends Proxy {
     @Override
     public void registerRenders(){
         registerMetadataRender(ModItems.materialEIO, Names.MATERIALS_EIO);
-        registerRender(ModItems.darkSteelChainsaw1);
         registerRender(ModItems.darkSteelDrill1);
         registerRender(ModItems.darkSteelDrill2, ModItems.darkSteelDrill1.getRegistryName());
         registerRender(ModItems.darkSteelDrill3, ModItems.darkSteelDrill1.getRegistryName());
+        registerRender(ModItems.darkSteelDrill4, ModItems.darkSteelDrill1.getRegistryName());
+        registerRender(ModItems.darkSteelChainsaw1);
+        registerRender(ModItems.darkSteelChainsaw2, ModItems.darkSteelChainsaw1.getRegistryName());
+        registerRender(ModItems.darkSteelChainsaw3, ModItems.darkSteelChainsaw1.getRegistryName());
+        registerRender(ModItems.darkSteelChainsaw4, ModItems.darkSteelChainsaw1.getRegistryName());
     }
 
     private static void registerRender(Item item) {

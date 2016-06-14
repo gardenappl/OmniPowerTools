@@ -58,7 +58,7 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        return Math.max(1.0d - getEnergyStored(stack) / propertiesRF.maxEnergy, 0);
+        return 1.0d - (double) getEnergyStored(stack) / (double) getMaxEnergyStored(stack);
     }
 
     @Override

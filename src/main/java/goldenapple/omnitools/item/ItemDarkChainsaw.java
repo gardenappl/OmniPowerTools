@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemDarkDrill extends ItemDrillRF{
-    private static ItemDarkDrill[] upgrades = new ItemDarkDrill[4];
+public class ItemDarkChainsaw extends ItemChainsawRF {
+    private static ItemDarkChainsaw[] upgrades = new ItemDarkChainsaw[4];
     private int level;
 
-    public ItemDarkDrill(ToolProperties properties, RFToolProperties propertiesRF, int empoweredLevel) {
-        super(properties, propertiesRF);
+    public ItemDarkChainsaw(ToolProperties properties, RFToolProperties propertiesRF, float speed, int empoweredLevel) {
+        super(properties, propertiesRF, speed);
         upgrades[empoweredLevel] = this;
         level = empoweredLevel;
     }
@@ -29,25 +29,11 @@ public class ItemDarkDrill extends ItemDrillRF{
         }
     }
 
-    public static ItemDarkDrill getEmpoweredUpgrade(int level){
+    public static ItemDarkChainsaw getEmpoweredUpgrade(int level){
         if(level < 0)
             return upgrades[0];
         else if(level >= upgrades.length)
             return upgrades[upgrades.length - 1];
         return upgrades[level];
     }
-
-    //    public MiningMode getMode(ItemStack stack) {
-//        if (modes.length == 1 || !stack.hasTagCompound())
-//            return modes[0];
-//        if (stack.getTagCompound().getByte("Mode") >= modes.length)
-//            return modes[0];
-//        else
-//            return modes[stack.getTagCompound().getByte("Mode")];
-//    }
-//
-//    @Override
-//    public boolean hasAoE(ItemStack stack, EntityPlayer player) {
-//        return canMine(stack) && getMode(stack) != MiningMode.NORMAL;
-//    }
 }

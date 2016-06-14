@@ -10,7 +10,7 @@ public class AnvilUpgradeHandler {
             int currentLevel = UpgradeHelper.getUpgradeLevel(event.getLeft(), upgrade);
 
             if(upgrade.canApply(event.getLeft(), currentLevel + 1) && upgrade.isRecipeValid(event.getRight(), currentLevel + 1)){
-                event.setOutput(UpgradeHelper.applyUpgrade(event.getLeft(), upgrade, currentLevel + 1));
+                event.setOutput(upgrade.apply(event.getLeft(), currentLevel + 1, true));
                 event.setMaterialCost(upgrade.getItemCost(event.getLeft(), currentLevel + 1));
                 event.setCost(upgrade.getLevelCost(event.getLeft(), currentLevel + 1));
             }
