@@ -44,19 +44,29 @@ public class Config {
         drillAttackSpeed = (float)config.get(CATEGORY_GENERAL, "Drill Attack Speed", drillAttackSpeed + 4).setLanguageKey("config.attackSpeedDrills").setRequiresMcRestart(true).getDouble() - 4;
         darkChainsawAttackSpeed = (float)config.get(getFullCategoryPath(CATEGORY_ENDERIO, "dark_chainsaw1"), "Attack Speed", darkChainsawAttackSpeed + 4).setLanguageKey("config.attackSpeed").setRequiresMcRestart(true).getDouble() - 4;
 
+        /** Values from original RFDrills */
+//        ToolTier.DRILL1 = getToolTierInfo("drill_tier1", 20000, 80, 80, EnumRarity.common, true, false, 2, 6.0F, 2.0F, 0);
+//        ToolTier.DRILL2 = getToolTierInfo("drill_tier2", 100000, 200, 400, EnumRarity.common, false, false, 3, 8.0F, 3.0F, 0);
+//        ToolTier.DRILL3 = getToolTierInfo("drill_tier3", 1000000, 800, 1500, EnumRarity.uncommon, false, true, 3, 10.0F, 4.0F, 10);
+//        ToolTier.DRILL4 = getToolTierInfo("drill_tier4", 5000000, 1600, 5000, EnumRarity.rare, false, true, 4, 12.0F, 5.0F, 15);
+
         ToolProperties.DARK_DRILL_1 = getToolProperties(CATEGORY_ENDERIO, "dark_drill1", 2, 6, 3, 25, true, EnumRarity.COMMON);
-        RFToolProperties.DARK_DRILL_1 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill1", 200000, 800, 500); //125 uses
+        RFToolProperties.DARK_DRILL_1 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill1", 200_000, 800, 500); //125 uses
         ToolProperties.DARK_DRILL_2 = getToolProperties(CATEGORY_ENDERIO, "dark_drill2", 3, 8, 4, 25, false, EnumRarity.COMMON);
-        RFToolProperties.DARK_DRILL_2 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill2", 1000000, 1600, 2000); //625 uses
-        ToolProperties.DARK_DRILL_3 = getToolProperties(CATEGORY_ENDERIO, "dark_drill3", 5, 10, 5, 25, false, EnumRarity.UNCOMMON);
-        RFToolProperties.DARK_DRILL_3 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill3", 5000000, 2000, 5000); //2500 uses
+        RFToolProperties.DARK_DRILL_2 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill2", 500_000, 1000, 1200); //500 uses
+        ToolProperties.DARK_DRILL_3 = getToolProperties(CATEGORY_ENDERIO, "dark_drill3", 4, 10, 5, 25, false, EnumRarity.UNCOMMON);
+        RFToolProperties.DARK_DRILL_3 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill3", 1_500_000, 1200, 3000); //1250 uses
+        ToolProperties.DARK_DRILL_4 = getToolProperties(CATEGORY_ENDERIO, "dark_drill4", 5, 12, 6, 25, false, EnumRarity.RARE);
+        RFToolProperties.DARK_DRILL_4 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_drill4", 5_000_000, 1600, 5000); //3125 uses
 
         ToolProperties.DARK_CHAINSAW_1 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw1", 2, 6, 7, 25, true, EnumRarity.COMMON);
-        RFToolProperties.DARK_CHAINSAW_1 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw1", 200000, 800, 500); //125 uses
+        RFToolProperties.DARK_CHAINSAW_1 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw1", 200_000, 800, 500); //125 uses
         ToolProperties.DARK_CHAINSAW_2 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw2", 3, 8, 8, 25, false, EnumRarity.COMMON);
-        RFToolProperties.DARK_CHAINSAW_2 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw2", 1000000, 1600, 2000); //625 uses
-        ToolProperties.DARK_CHAINSAW_3 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw3", 5, 10, 9, 25, false, EnumRarity.UNCOMMON);
-        RFToolProperties.DARK_CHAINSAW_3 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw3", 5000000, 2000, 5000); //2500 uses
+        RFToolProperties.DARK_CHAINSAW_2 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw2", 500_000, 1000, 1200); //500 uses
+        ToolProperties.DARK_CHAINSAW_3 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw3", 4, 10, 9, 25, false, EnumRarity.UNCOMMON);
+        RFToolProperties.DARK_CHAINSAW_3 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw3", 1_500_000, 1200, 3000); //1250 uses
+        ToolProperties.DARK_CHAINSAW_4 = getToolProperties(CATEGORY_ENDERIO, "dark_chainsaw4", 5, 12, 10, 25, false, EnumRarity.RARE);
+        RFToolProperties.DARK_CHAINSAW_4 = getToolPropertiesRF(CATEGORY_ENDERIO, "dark_chainsaw4", 5_000_000, 1600, 5000); //3125 uses
 
         if(config.hasChanged())
             config.save();
