@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -37,28 +38,35 @@ public class BlockRenderHandler implements IResourceManagerReloadListener {
     private final TextureAtlasSprite[] destroyBlockIcons = new TextureAtlasSprite[10];
 
     @SubscribeEvent
+    public void renderExtraBlockHighlight(DrawBlockHighlightEvent event){
+        PlayerControllerMP controllerMP = Minecraft.getMinecraft().playerController;
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        World world = player.worldObj;
+        ItemStack stack = player.getHeldItemMainhand();
+
+        if(stack != null && stack.getItem() instanceof ITool && ((ITool) stack.getItem()).hasAoE(stack, player)) {
+            RayTraceResult mop = player.rayTrace(controllerMP.getBlockReachDistance(), event.getPartialTicks());
+            if (mop != null) {
+                ImmutableList<BlockPos> extraBlocks = ((ITool) stack.getItem()).getAoEBlocks(stack, world, player, mop.getBlockPos(), false);
+                for (BlockPos pos : extraBlocks)
+                    event.getContext().drawSelectionBox(player, new RayTraceResult(mop.hitVec.add(new Vec3d(pos.subtract(controllerMP.currentBlock))), mop.sideHit, pos), 0, event.getPartialTicks());
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void renderExtraBlockBreak(RenderWorldLastEvent event) {
         PlayerControllerMP controllerMP = Minecraft.getMinecraft().playerController;
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         World world = player.worldObj;
+        ItemStack stack = player.getHeldItemMainhand();
 
-        // AOE selection preview
-        if(player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ITool) {
-            RayTraceResult mop = player.rayTrace(controllerMP.getBlockReachDistance(), event.getPartialTicks());
-            if(mop != null) {
-                ItemStack stack = player.getHeldItemMainhand();
-                ImmutableList<BlockPos> extraBlocks = ((ITool) stack.getItem()).getAoEBlocks(stack, world, player, mop.getBlockPos(), false);
-                for(BlockPos pos : extraBlocks)
-                    event.getContext().drawSelectionBox(player, new RayTraceResult(mop.hitVec.add(new Vec3d(pos.subtract(controllerMP.currentBlock))), mop.sideHit, pos), 0, event.getPartialTicks());
-            }
-        }
-
-        // AoE block-break animation
-        if(controllerMP.isHittingBlock) {
-            if(controllerMP.currentItemHittingBlock != null && controllerMP.currentItemHittingBlock.getItem() instanceof ITool) {
-                ItemStack stack = controllerMP.currentItemHittingBlock;
-                BlockPos pos = controllerMP.currentBlock;
-                drawBlockDamageTexture(player, event.getPartialTicks(), world, ((ITool) stack.getItem()).getAoEBlocks(stack, world, player, pos, true));
+        if(stack != null && stack.getItem() instanceof ITool && ((ITool) stack.getItem()).hasAoE(stack, player)) {
+            if (controllerMP.isHittingBlock) {
+                if (controllerMP.currentItemHittingBlock != null && controllerMP.currentItemHittingBlock.getItem() instanceof ITool) {
+                    BlockPos pos = controllerMP.currentBlock;
+                    drawBlockDamageTexture(player, event.getPartialTicks(), world, ((ITool) stack.getItem()).getAoEBlocks(stack, world, player, pos, true));
+                }
             }
         }
     }
@@ -94,16 +102,16 @@ public class BlockRenderHandler implements IResourceManagerReloadListener {
         vertexBuffer.setTranslation(-d0, -d1, -d2);
         vertexBuffer.noColor();
 
-        for(BlockPos blockpos : blocks) {
-            TileEntity te = world.getTileEntity(blockpos);
+        for(BlockPos pos : blocks) {
+            TileEntity te = world.getTileEntity(pos);
             boolean hasBreak = te != null && te.canRenderBreaking();
 
             if (!hasBreak){
-                IBlockState iblockstate = world.getBlockState(blockpos);
+                IBlockState iblockstate = world.getBlockState(pos);
                 if (iblockstate.getMaterial() != Material.AIR){
                     TextureAtlasSprite textureatlassprite = this.destroyBlockIcons[progress];
                     BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-                    blockrendererdispatcher.renderBlockDamage(iblockstate, blockpos, textureatlassprite, world);
+                    blockrendererdispatcher.renderBlockDamage(iblockstate, pos, textureatlassprite, world);
                 }
             }
         }
