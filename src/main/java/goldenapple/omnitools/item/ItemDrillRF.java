@@ -27,7 +27,7 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
     public ItemDrillRF(ToolProperties properties, RFToolProperties propertiesRF) {
         super(properties);
         this.propertiesRF = propertiesRF;
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
     }
 
     @Override

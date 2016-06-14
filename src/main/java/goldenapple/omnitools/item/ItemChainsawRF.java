@@ -28,7 +28,7 @@ public class ItemChainsawRF extends ItemChainsaw implements IRFContainerItem {
     public ItemChainsawRF(ToolProperties properties, RFToolProperties propertiesRF, float speed) {
         super(properties, speed);
         this.propertiesRF = propertiesRF;
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
     }
 
     @Override

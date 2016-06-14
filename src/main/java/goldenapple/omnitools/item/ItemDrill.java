@@ -1,6 +1,7 @@
 package goldenapple.omnitools.item;
 
 import com.google.common.collect.*;
+import goldenapple.omnitools.OmniTools;
 import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.config.ToolProperties;
 import goldenapple.omnitools.util.ToolHelper;
@@ -29,8 +30,9 @@ public class ItemDrill extends ItemTool implements ITool {
     public ItemDrill(ToolProperties properties) {
         super(0f, Config.drillAttackSpeed, properties.material, effectiveBlocks);
         this.properties = properties;
-        this.setHarvestLevel("pickaxe", properties.material.getHarvestLevel());
-        this.setHarvestLevel("shovel", properties.material.getHarvestLevel());
+        setHarvestLevel("pickaxe", properties.material.getHarvestLevel());
+        setHarvestLevel("shovel", properties.material.getHarvestLevel());
+        setCreativeTab(OmniTools.creativeTab);
     }
 
     @Override

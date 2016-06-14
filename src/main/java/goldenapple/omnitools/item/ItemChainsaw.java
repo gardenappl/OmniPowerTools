@@ -3,6 +3,7 @@ package goldenapple.omnitools.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import goldenapple.omnitools.OmniTools;
 import goldenapple.omnitools.config.Config;
 import goldenapple.omnitools.config.ToolProperties;
 import goldenapple.omnitools.util.ToolHelper;
@@ -30,6 +31,7 @@ public class ItemChainsaw extends ItemAxe implements ITool{
     public ItemChainsaw(ToolProperties properties, float speed) {
         super(properties.material, properties.material.getDamageVsEntity(), speed);
         this.properties = properties;
+        setCreativeTab(OmniTools.creativeTab);
     }
 
     @Override
