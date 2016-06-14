@@ -89,6 +89,13 @@ public class ItemChainsawRF extends ItemChainsaw implements IRFContainerItem {
         return false;
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        //This is done to prevent mining progress from resetting while the tool charges
+        //I could compare NBT tags instead but I'm lazy
+        return oldStack.getItem() == newStack.getItem();
+    }
+
     public int getEnergyUsage(ItemStack stack){
         //Vanilla formula: a 100% / (unbreaking level + 1) chance to not take damage
         return Math.round(propertiesRF.energyPerBlock / (EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack) + 1));

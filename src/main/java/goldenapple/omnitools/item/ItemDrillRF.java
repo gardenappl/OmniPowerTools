@@ -8,7 +8,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
@@ -17,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
@@ -76,6 +74,13 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
         return false;
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        //This is done to prevent mining progress from resetting while the tool charges
+        //I could compare NBT tags instead but I'm lazy
+        return oldStack.getItem() != newStack.getItem();
+    }
+
     public int getEnergyUsage(ItemStack stack){
         //Vanilla formula: a 100% / (unbreaking level + 1) chance to not take damage
         return Math.round(propertiesRF.energyPerBlock / (EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack) + 1));
@@ -88,11 +93,6 @@ public class ItemDrillRF extends ItemDrill implements IRFContainerItem {
     @Override
     public boolean canMine(ItemStack stack) {
         return getEnergyStored(stack) > 0;
-    }
-
-    @Override
-    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
-        return super.getItemUseAction(stack);
     }
 
     /** IRFTool */

@@ -18,7 +18,6 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("NullableProblems")
@@ -36,8 +35,8 @@ public class ItemDrill extends ItemTool implements ITool {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, playerIn, tooltip, advanced);
+    public ToolMaterial getToolMaterial() {
+        return super.getToolMaterial();
     }
 
     @Override
@@ -103,17 +102,11 @@ public class ItemDrill extends ItemTool implements ITool {
 
     @Override
     public boolean hasAoE(ItemStack stack, EntityPlayer player) {
-//        return canMine(stack) && getMode(stack) != MiningMode.NORMAL;
         return false;
     }
 
     @Override
     public ImmutableList<BlockPos> getAoEBlocks(ItemStack stack, World world, EntityPlayer player, BlockPos pos, boolean harvest) {
-//        if (!hasAoE(stack, player))
-            return ImmutableList.of();
-//        RayTraceResult mop = rayTrace(world, player, false);
-//        if (mop == null)
-//            return ImmutableList.of();
-//        return getMode(stack).getAoEBlocks(stack, world, player, pos, mop.sideHit, harvest);
+        return ImmutableList.of();
     }
 }
